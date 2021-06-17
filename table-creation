@@ -1,0 +1,61 @@
+-- Car Table Creation
+CREATE TABLE Car (
+	car_serial SERIAL PRIMARY KEY,
+	make VARCHAR(20),
+	model VARCHAR(20),
+	color VARCHAR(20),
+	_year INTEGER,
+	car_amount NUMERIC(6,2)
+);
+
+-- SalesPerson Table Creation
+CREATE TABLE SalesPerson (
+	staff_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(100),
+	last_name VARCHAR(150)
+);
+
+-- Customer Table Creation
+CREATE TABLE Customer (
+	customer_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(100),
+	last_name VARCHAR(150)
+);
+
+-- Mechanic Table Creation
+CREATE TABLE Mechanic (
+	mechanic_id SERIAL PRIMARY KEY,
+	car_serial INTEGER,
+	customer_id INTEGER,
+	FOREIGN KEY(car_serial) REFERENCES Car(car_serial),
+	FOREIGN KEY(customer_id) REFERENCES customer(customer_id)
+);
+
+-- Parts Table Creation
+CREATE TABLE Parts (
+	part_id SERIAL PRIMARY KEY,
+	work_done VARCHAR(250),
+	mechanic_id INTEGER,
+	car_serial INTEGER,
+	customer_id INTEGER,
+	FOREIGN KEY (mechanic_id) REFERENCES Mechanic(mechanic_id),
+	FOREIGN KEY (car_serial) REFERENCES Car(car_serial),
+	FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+	parts_amount NUMERIC(6,2)
+);
+
+-- Invoice Table Creation
+CREATE TABLE Invoice (
+	invoice_id SERIAL PRIMARY KEY,
+	invoice_type VARCHAR(20),
+	customer_id INTEGER,
+	FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+	payment_id INTEGER,
+	payment_type VARCHAR(20),
+	payment_date DATE DEFAULT CURRENT_DATE,
+	total_amount NUMERIC(6,2),
+	staff_id INTEGER,
+	car_serial INTEGER,
+	FOREIGN KEY (staff_id) REFERENCES SalesPerson(staff_id),
+	FOREIGN KEY (car_serial) REFERENCES Car(car_serial)
+);
